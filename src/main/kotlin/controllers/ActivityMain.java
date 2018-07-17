@@ -1,7 +1,9 @@
 package controllers;
 
+import gui.View;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.stage.Stage;
 
 public class ActivityMain extends MainActivityFrameWork{
 
@@ -56,4 +58,5 @@ public class ActivityMain extends MainActivityFrameWork{
     protected void runSQL(ActionEvent actionEvent) {
 
     }
+
 }

@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 
-<BorderPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ActivityMain">
+<BorderPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ActivityMain">
     <top>
     <VBox prefHeight="55.0" prefWidth="800.0" BorderPane.alignment="CENTER">
         <MenuBar>
@@ -86,11 +86,11 @@
     <center>
     <SplitPane dividerPositions="0.25" prefHeight="545.0" prefWidth="800.0" BorderPane.alignment="CENTER">
         <items>
-            <JFXTreeView fx:id="databaselist" prefHeight="545.0" prefWidth="200.0">
+            <VBox fx:id="connectionList" prefHeight="545.0" prefWidth="200.0">
                 <effect>
                     <Blend />
                 </effect>
-            </JFXTreeView>
+            </VBox>
             <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="SELECTED_TAB">
               <tabs>
                 <Tab text="Untitled Tab 1">

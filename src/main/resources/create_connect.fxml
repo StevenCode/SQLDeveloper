@@ -1,29 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <?import javafx.geometry.Insets?>
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="controllers.CreateConnectControler"
-      prefHeight="300.0" prefWidth="300.0">
-    <children>
 
-        <HBox spacing="10.0" layoutX="50.0">
-            <Label text="connect_name: " prefHeight="10.0" prefWidth="140.0"></Label>
+<GridPane fx:controller="controller.CreateConnectControler"
+          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
 
-            <TextField fx:id="connectName" prefHeight="10.0" prefWidth="140.0"></TextField>
-        </HBox>
+    <padding>
+        <Insets top="25" right="25" bottom="10" left="25"/>
+    </padding>
 
-        <HBox spacing="10.0" layoutX="50.0">
-            <Label text="connect_name: " prefHeight="10.0" prefWidth="140.0"></Label>
 
-            <TextField fx:id="sh" prefHeight="10.0" prefWidth="140.0"></TextField>
-        </HBox>
+    <Label text="Connect Name: " GridPane.columnIndex="0"
+           GridPane.rowIndex="1"/>
 
-    </children>
-</VBox>
+    <TextField fx:id="connectName" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+    <Label text="Connect IP: " GridPane.columnIndex="0"
+           GridPane.rowIndex="2"/>
+
+    <TextField fx:id="connectIp" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+    <Label text="Port: " GridPane.columnIndex="0"
+           GridPane.rowIndex="3"/>
+
+    <TextField fx:id="port" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+    <Label text="Username: " GridPane.columnIndex="0"
+           GridPane.rowIndex="4"/>
+
+    <TextField fx:id="username" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+    <Label text="Password: " GridPane.columnIndex="0"
+           GridPane.rowIndex="5"/>
+
+    <PasswordField fx:id="password" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+    <HBox  alignment="bottom_left" GridPane.columnIndex="1"
+           GridPane.rowIndex="6">
+    <CheckBox fx:id="savePassword" text="save password"></CheckBox>
+    </HBox>
+    <HBox spacing="10" alignment="bottom_left" GridPane.columnIndex="0"
+          GridPane.rowIndex="7">
+        <Button text="Test Connection" onAction="#testConnect"/>
+    </HBox>
+
+    <HBox spacing="10" alignment="bottom_right" GridPane.columnIndex="1"
+          GridPane.rowIndex="7">
+        <Button text="Confirm" onAction="#confirm"/>
+        <Button text="Cancel" onAction="#cancel"/>
+    </HBox>
+
+</GridPane>
+
+

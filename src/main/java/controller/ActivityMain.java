@@ -1,15 +1,23 @@
-package controllers;
+package controller;
 
-import gui.View;
+import controllers.MainActivityFrameWork;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.stage.Stage;
+import javafx.scene.Node;
+import javafx.scene.layout.VBox;
 
-public class ActivityMain extends MainActivityFrameWork{
+
+
+public class ActivityMain extends MainActivityFrameWork {
+
+
+    @FXML
+    private VBox connectionList;
 
     @FXML
     protected void createConnect(ActionEvent actionEvent) {
-
+        createConnect();
     }
 
     @FXML
@@ -49,6 +57,7 @@ public class ActivityMain extends MainActivityFrameWork{
     protected void loadQuery(ActionEvent actionEvent) {
 
     }
+
     @FXML
     protected void saveQuery(ActionEvent actionEvent) {
 
@@ -57,6 +66,12 @@ public class ActivityMain extends MainActivityFrameWork{
     @FXML
     protected void runSQL(ActionEvent actionEvent) {
 
+    }
+
+    @Override
+    public void refresh() {
+        ObservableList<Node> children = connectionList.getChildren();
+        addTreeView(children);
     }
 
 }

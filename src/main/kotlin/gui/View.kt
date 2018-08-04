@@ -19,7 +19,7 @@ class View : Application() {
         val theScene = Scene(parent, 800.0, 600.0)
         primaryStage?.run { scene = theScene
         title ="SQL Developer"
-        isResizable = false
+//        isResizable = false
             show()
         }
 

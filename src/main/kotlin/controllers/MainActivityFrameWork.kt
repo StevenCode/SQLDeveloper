@@ -10,6 +10,8 @@ import javafx.scene.Node
 import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.TreeItem
+import javafx.scene.image.Image
+import javafx.scene.image.ImageView
 import javafx.stage.Modality
 import javafx.stage.Stage
 
@@ -46,9 +48,13 @@ abstract class MainActivityFrameWork(){
         Library.connections!!.forEach {
             if (!connectRootLists.contains(it.connectName)){
                 connectRootLists.add(it.connectName)
-                val jFXTreeView = JFXTreeView<String>()
+
+                val loader = FXMLLoader(View::class.java.getResource("/connect_treeview.fxml"))
+
+                val jFXTreeView = loader.load<JFXTreeView<String>>()
                 val treeItem = TreeItem<String>()
                 treeItem.setValue(it.connectName)
+                treeItem.children.add(TreeItem("aa",ImageView(Image("table.png", 16.0, 16.0, false, false))))
                 jFXTreeView.setRoot(treeItem)
                 children.add(jFXTreeView)
             }

@@ -6,6 +6,6 @@
 <JFXTreeView xmlns="http://javafx.com/javafx"
              xmlns:fx="http://javafx.com/fxml"
              fx:controller="controller.ConnectTreeviewController"
-             prefHeight="100.0" prefWidth="200.0">
+            maxHeight="Infinity">
 
 </JFXTreeView>

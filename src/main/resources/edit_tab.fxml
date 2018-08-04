@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+
+<?import com.jfoenix.controls.JFXTreeView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.ScrollPane?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<Tab xmlns="http://javafx.com/javafx"
+     xmlns:fx="http://javafx.com/fxml"
+     fx:controller="controller.EditTabController"
+     >
+    <content>
+        <ScrollPane>
+            <JFXTextArea>
+
+            </JFXTextArea>
+        </ScrollPane>
+    </content>
+</Tab>

@@ -1,16 +1,16 @@
 package controllers
 
-import model.Connection
+import model.ConnectionInfo
 import constant.Library
 import javafx.scene.control.CheckBox
 import javafx.scene.control.TextField
 
 abstract class CreateConnectFrameWork() {
-    open fun addNewConnection(connectName: TextField, connectIp: TextField, port: TextField,
+    open fun addNewConnection(connectName: TextField, connectIp: TextField, port: TextField, dbName: TextField,
                               username: TextField, password: TextField, savePassword: CheckBox) {
-        val connection = Connection(connectName.text, connectIp.text, port.text.toInt(),
+        val connection = ConnectionInfo(connectName.text, connectIp.text, port.text.toInt(), dbName.text,
                 username.text, password.text, savePassword.isSelected)
 
-        Library.connections!!.add(connection)
+        Library.CONNECTION_INFOS!!.put(connectName.text,connection)
     }
 }

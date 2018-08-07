@@ -23,6 +23,8 @@ public class CreateConnectControler extends CreateConnectFrameWork {
     @FXML
     private TextField password;
     @FXML
+    private TextField dbname;
+    @FXML
     private CheckBox savePassword;
 
 
@@ -37,7 +39,7 @@ public class CreateConnectControler extends CreateConnectFrameWork {
     }
 
     public void confirm(ActionEvent actionEvent) {
-        addNewConnection(connectName, connectIp, port, username, password, savePassword);
+        addNewConnection(connectName, connectIp, port, dbname, username, password, savePassword);
         dialogStage.close();
     }
 

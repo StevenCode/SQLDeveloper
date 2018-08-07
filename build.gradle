@@ -21,6 +21,7 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile group: 'com.jfoenix', name: 'jfoenix', version: '1.4.0'
+    compile group: 'org.postgresql', name: 'postgresql', version: '9.3-1102-jdbc41'
 }
 
 compileKotlin {

@@ -1,9 +1,9 @@
 package constant
 
-import model.Connection
+import model.ConnectionInfo
 
 class Library(){
     companion object {
-        val connections: ArrayList<Connection>? = ArrayList()
+        val CONNECTION_INFOS = HashMap<String, ConnectionInfo>()
     }
 }

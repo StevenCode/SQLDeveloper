@@ -1,21 +1,22 @@
 package controllers
 
-import com.jfoenix.controls.JFXTreeView
 import constant.Library
 import controller.CreateConnectControler
 import gui.View
+import javafx.application.Platform
 import javafx.collections.ObservableList
 import javafx.fxml.FXMLLoader
-import javafx.scene.Node
 import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.TreeItem
-import javafx.scene.image.Image
-import javafx.scene.image.ImageView
+import javafx.scene.control.TreeView
 import javafx.stage.Modality
 import javafx.stage.Stage
+import util.DataBaseManager
 
 abstract class MainActivityFrameWork(){
+    val connectLevel: Int = 1
+
     val connectRootLists: ArrayList<String> = ArrayList<String>()
 
     open fun createConnect(){
@@ -28,7 +29,7 @@ abstract class MainActivityFrameWork(){
         val createNewConnectView = loader.load<Parent>()
 
         val dialogStage: Stage = Stage()
-        dialogStage.title = "Create New Connection"
+        dialogStage.title = "Create New ConnectionInfo"
         dialogStage.initModality(Modality.WINDOW_MODAL)
 //        dialogStage.initStyle()
         dialogStage.isResizable = false
@@ -44,22 +45,72 @@ abstract class MainActivityFrameWork(){
         refresh()
     }
 
-    protected fun addTreeView(children: ObservableList<Node>){
-        Library.connections!!.forEach {
+    protected fun addTreeView(children: ObservableList<Any>){
+        Library.CONNECTION_INFOS.values!!.forEach {
             if (!connectRootLists.contains(it.connectName)){
                 connectRootLists.add(it.connectName)
 
-                val loader = FXMLLoader(View::class.java.getResource("/connect_treeview.fxml"))
+                val treeItem = TreeItem(it.connectName)
+                treeItem.children.add(TreeItem("a"))
+                treeItem.children.add(TreeItem("b"))
 
-                val jFXTreeView = loader.load<JFXTreeView<String>>()
-                val treeItem = TreeItem<String>()
-                treeItem.setValue(it.connectName)
-                treeItem.children.add(TreeItem("aa",ImageView(Image("table.png", 16.0, 16.0, false, false))))
-                jFXTreeView.setRoot(treeItem)
-                children.add(jFXTreeView)
+                children.add(treeItem)
             }
         }
     }
+
+    protected fun openConnect(treeView: TreeView<*>){
+        val selectedItem = treeView.selectionModel.selectedItem ?: return
+
+        if(treeView.getTreeItemLevel(selectedItem)!=connectLevel){
+            return
+        }
+
+        if (selectedItem.isExpanded) return
+
+        if (DataBaseManager.connect(selectedItem.value.toString())) {
+            selectedItem.isExpanded = true
+        }else{
+            showCannotConnectDialog()
+        }
+    }
+
+    abstract fun showCannotConnectDialog()
+
+    protected fun openOrCloseConnect(treeView: TreeView<*>) {
+        val selectedItem = treeView.selectionModel.selectedItem
+        println(selectedItem.isExpanded)
+        //先展开后
+        if (!selectedItem.isExpanded) {
+            closeConnect(treeView)
+        }else{
+            openConnect(treeView)
+        }
+    }
+    protected fun closeConnect(treeView: TreeView<*>){
+        val selectedItem = treeView.selectionModel.selectedItem ?: return
+
+        if (!selectedItem.isExpanded) return
+
+        if (DataBaseManager.closeConnection(selectedItem.value.toString())) {
+            selectedItem.isExpanded = false
+        }else{
+            closeConnectFailDailog()
+        }
+    }
+
+    abstract fun closeConnectFailDailog()
+
+    protected fun close() {
+        DataBaseManager.closeAllConnection()
+        View.stage?.close()
+    }
+
+    protected fun exit() {
+        Platform.exit()
+    }
+
+
 
     abstract fun refresh();
 }

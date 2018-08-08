@@ -50,6 +50,6 @@ public class CreateConnectControler extends CreateConnectFrameWork {
 
 
     public void testConnect(ActionEvent actionEvent) {
-        //TODO 测试网络弹窗
+        testConnect(connectName, connectIp, port, dbname, username, password, savePassword);
     }
 }

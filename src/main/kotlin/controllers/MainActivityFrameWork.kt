@@ -2,6 +2,8 @@ package controllers
 
 import constant.Library
 import controller.CreateConnectControler
+import extend.closeConnect
+import extend.openConnect
 import gui.View
 import javafx.application.Platform
 import javafx.collections.ObservableList
@@ -12,12 +14,14 @@ import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeView
 import javafx.stage.Modality
 import javafx.stage.Stage
+import javafx.util.Callback
 import util.DataBaseManager
 
 abstract class MainActivityFrameWork(){
     val connectLevel: Int = 1
 
     val connectRootLists: ArrayList<String> = ArrayList<String>()
+    val connectItems = HashMap<String,TreeItem<String>>()
 
     open fun createConnect(){
         showCreateConnectDialog()
@@ -45,61 +49,31 @@ abstract class MainActivityFrameWork(){
         refresh()
     }
 
-    protected fun addTreeView(children: ObservableList<Any>){
+    protected fun addTreeView(treeView: TreeView<*>){
+        treeView.cellFactory = Callback { return@Callback TreeItemCell() }
+
+        val root = treeView.root
+        val children = root.children as ObservableList<TreeItem<String>>
+
         Library.CONNECTION_INFOS.values!!.forEach {
             if (!connectRootLists.contains(it.connectName)){
                 connectRootLists.add(it.connectName)
 
                 val treeItem = TreeItem(it.connectName)
-                treeItem.children.add(TreeItem("a"))
-                treeItem.children.add(TreeItem("b"))
-
+                connectItems.put(it.connectName,treeItem)
                 children.add(treeItem)
             }
         }
     }
-
     protected fun openConnect(treeView: TreeView<*>){
-        val selectedItem = treeView.selectionModel.selectedItem ?: return
-
-        if(treeView.getTreeItemLevel(selectedItem)!=connectLevel){
-            return
-        }
-
-        if (selectedItem.isExpanded) return
-
-        if (DataBaseManager.connect(selectedItem.value.toString())) {
-            selectedItem.isExpanded = true
-        }else{
-            showCannotConnectDialog()
-        }
+        (treeView as TreeView<String>).openConnect()
     }
 
-    abstract fun showCannotConnectDialog()
 
-    protected fun openOrCloseConnect(treeView: TreeView<*>) {
-        val selectedItem = treeView.selectionModel.selectedItem
-        println(selectedItem.isExpanded)
-        //先展开后
-        if (!selectedItem.isExpanded) {
-            closeConnect(treeView)
-        }else{
-            openConnect(treeView)
-        }
-    }
+
     protected fun closeConnect(treeView: TreeView<*>){
-        val selectedItem = treeView.selectionModel.selectedItem ?: return
-
-        if (!selectedItem.isExpanded) return
-
-        if (DataBaseManager.closeConnection(selectedItem.value.toString())) {
-            selectedItem.isExpanded = false
-        }else{
-            closeConnectFailDailog()
-        }
+        (treeView as TreeView<String>).closeConnect()
     }
-
-    abstract fun closeConnectFailDailog()
 
     protected fun close() {
         DataBaseManager.closeAllConnection()

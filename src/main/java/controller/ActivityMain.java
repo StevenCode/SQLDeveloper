@@ -76,26 +76,14 @@ public class ActivityMain extends MainActivityFrameWork {
 
     @Override
     public void refresh() {
-        ObservableList children = connectionList.getChildren();
-        addTreeView(children);
+        addTreeView(treeView);
     }
 
-    @Override
-    public void showCannotConnectDialog() {
-        System.out.println("无法连接");
-    }
-
-    @Override
-    public void closeConnectFailDailog() {
-        System.out.println("关闭连接失败");
-    }
 
 
     public void treeViewClicked(MouseEvent mouseEvent) {
         if (mouseEvent.getClickCount() == 2) {
-            System.out.println("Double click");
-            openOrCloseConnect(treeView);
+            openConnect(treeView);
         }
-
     }
 }

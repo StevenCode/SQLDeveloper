@@ -44,20 +44,26 @@ object DataBaseManager {
         return true
     }
 
-        public fun querySQL(connectName: String, sql: String) {
-            var sql = sql
-            var connection: Connection? = connectPool.get(connectName) ?: return
+        public fun queryTables(connectName: String) :List<String>{
+            val tableGroup = ArrayList<String>()
 
-            sql = "SELECT datname FROM pg_database;"
+            var connection: Connection = connectPool.get(connectName)!!
+
+            var sql = "SELECT datname FROM pg_database;"
 
 
             val statement = connection!!.createStatement()
             val resultSet = statement.executeQuery(sql)
             while (resultSet.next()) {
                 val tableName = resultSet.getString(1)
-                println(tableName)
+                tableGroup.add(tableName)
             }
+
+            return tableGroup
         }
+
+
+
 
         public fun closeConnection(connectionName: String): Boolean {
             var success: Boolean = false

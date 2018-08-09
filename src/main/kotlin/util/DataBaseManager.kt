@@ -17,6 +17,16 @@ object DataBaseManager {
 
     public fun connect(connectName: String): Boolean {
         val connectionInfo = Library.CONNECTION_INFOS.get(connectName)
+        if (connectionInfo == null) {
+            Library.CONNECTION_INFOS
+        }
+        return this.connect(connectionInfo!!)
+
+    }
+
+    public fun connect(connectName: String, dbName: String): Boolean {
+        val connectionInfo = Library.CONNECTION_INFOS.get(connectName)
+        connectionInfo!!.dbName = dbName
         return this.connect(connectionInfo!!)
 
     }
@@ -32,7 +42,7 @@ object DataBaseManager {
                 val connection = DriverManager.getConnection(connectUrl, username, password)
 
                 if (!connection.isClosed) {
-                    connectPool.put(connectName, connection)
+                    connectPool.put(connectUrl, connection)
                 }
 
             } catch (e: SQLException) {
@@ -44,46 +54,121 @@ object DataBaseManager {
         return true
     }
 
-        public fun queryTables(connectName: String) :List<String>{
-            val tableGroup = ArrayList<String>()
+    public fun queryDbs(connectName: String): List<String> {
+        val dbGroup = ArrayList<String>()
 
-            var connection: Connection = connectPool.get(connectName)!!
+        val connectionInfo = Library.CONNECTION_INFOS.get(connectName)
+        var connectUrl: String = ""
 
-            var sql = "SELECT datname FROM pg_database;"
 
+        connectionInfo?.apply {
+            connectUrl = urlTemplate.replace("{address}", "$connectIP:$port")
+            connectUrl = connectUrl.replace("{dbName}", dbName)
 
-            val statement = connection!!.createStatement()
-            val resultSet = statement.executeQuery(sql)
-            while (resultSet.next()) {
-                val tableName = resultSet.getString(1)
-                tableGroup.add(tableName)
-            }
-
-            return tableGroup
         }
 
+        var connection: Connection = connectPool.get(connectUrl)!!
+
+        var sql = "SELECT datname FROM pg_database;"
 
 
-
-        public fun closeConnection(connectionName: String): Boolean {
-            var success: Boolean = false
-
-            val connection = connectPool.get(connectionName) ?: return success
-
-            try {
-                if (connection.isClosed) {
-                    connection.close()
-                }
-                success = true
-            } catch (e: SQLException) {
-                return false
-            }
-            return success
+        val statement = connection!!.createStatement()
+        val resultSet = statement.executeQuery(sql)
+        while (resultSet.next()) {
+            val tableName = resultSet.getString(1)
+            dbGroup.add(tableName)
         }
 
-        public fun closeAllConnection() {
-            connectPool.values.forEach {
-                if (!it.isClosed) it.close()
+        return dbGroup
+    }
+
+    public fun queryTables(connectName: String,dbName: String): List<String> {
+        val tableGroup = ArrayList<String>()
+
+
+        val connectionInfo = Library.CONNECTION_INFOS.get(connectName)
+        var connectUrl: String = ""
+
+
+        connectionInfo?.apply {
+            connectUrl = urlTemplate.replace("{address}", "$connectIP:$port")
+
+
+        }
+        connectUrl = connectUrl.replace("{dbName}", dbName)
+
+        var connection: Connection = connectPool.get(connectUrl)!!
+
+        var sql = "select tablename from pg_tables where schemaname='public'"
+
+
+        val statement = connection!!.createStatement()
+        val resultSet = statement.executeQuery(sql)
+        while (resultSet.next()) {
+            val tableName = resultSet.getString(1)
+            tableGroup.add(tableName)
+        }
+
+        return tableGroup
+    }
+
+
+    public fun closeConnection(connectionName: String): Boolean {
+        var success: Boolean = false
+
+        val connectionInfo = Library.CONNECTION_INFOS.get(connectionName)
+        var connectUrl: String = ""
+
+
+        connectionInfo?.apply {
+            connectUrl = urlTemplate.replace("{address}", "$connectIP:$port")
+            connectUrl = connectUrl.replace("{dbName}", dbName)
+
+        }
+
+        val connection = connectPool.get(connectUrl) ?: return success
+
+        try {
+            if (connection.isClosed) {
+                connection.close()
             }
+            success = true
+        } catch (e: SQLException) {
+            return false
+        }
+        return success
+    }
+
+    public fun closeConnection(connectionName: String,dbName: String): Boolean {
+        var success: Boolean = false
+
+        val connectionInfo = Library.CONNECTION_INFOS.get(connectionName)
+        var connectUrl: String = ""
+
+
+        connectionInfo?.apply {
+            connectUrl = urlTemplate.replace("{address}", "$connectIP:$port")
+
+
+        }
+        connectUrl = connectUrl.replace("{dbName}", dbName)
+
+        val connection = connectPool.get(connectUrl) ?: return success
+
+        try {
+            if (connection.isClosed) {
+                connection.close()
+            }
+            success = true
+        } catch (e: SQLException) {
+            return false
+        }
+        return success
+    }
+
+    public fun closeAllConnection() {
+        connectPool.values.forEach {
+            if (!it.isClosed) it.close()
         }
     }
+}

@@ -65,14 +65,14 @@ abstract class MainActivityFrameWork(){
             }
         }
     }
-    protected fun openConnect(treeView: TreeView<*>){
-        (treeView as TreeView<String>).openConnect()
+    protected fun openConnect(treeView: TreeView<*>, isMenu:Boolean){
+        (treeView as TreeView<String>).openConnect(isMenu)
     }
 
 
 
     protected fun closeConnect(treeView: TreeView<*>){
-        (treeView as TreeView<String>).closeConnect()
+        (treeView as TreeView<String>).closeConnect(true)
     }
 
     protected fun close() {

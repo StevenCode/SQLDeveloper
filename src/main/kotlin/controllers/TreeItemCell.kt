@@ -14,10 +14,10 @@ class TreeItemCell : TreeCell<String>() {
 
     init {
         val openConnectMenu = MenuItem("Open")
-        openConnectMenu.setOnAction { treeView.openConnect()}
+        openConnectMenu.setOnAction { treeView.openConnect(false)}
 
         val closeConectMenu = MenuItem("Close")
-        closeConectMenu.setOnAction { treeView.closeConnect() }
+        closeConectMenu.setOnAction { treeView.closeConnect(false) }
 
         menu.items.add(openConnectMenu)
         menu.items.add(closeConectMenu)
@@ -32,7 +32,7 @@ class TreeItemCell : TreeCell<String>() {
         } else {
             text = if (getItem() == null) "" else getItem().toString()
             graphic = treeItem.graphic
-            if (treeView.getTreeItemLevel(treeItem) == 1) {
+            if (treeView.getTreeItemLevel(treeItem) == 1||treeView.getTreeItemLevel(treeItem) == 2) {
                 contextMenu = menu
             }
         }

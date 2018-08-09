@@ -28,7 +28,7 @@ public class ActivityMain extends MainActivityFrameWork {
 
     @FXML
     protected void openConnect(ActionEvent actionEvent) {
-        openConnect(treeView);
+        openConnect(treeView,true);
     }
 
     @FXML
@@ -83,7 +83,7 @@ public class ActivityMain extends MainActivityFrameWork {
 
     public void treeViewClicked(MouseEvent mouseEvent) {
         if (mouseEvent.getClickCount() == 2) {
-            openConnect(treeView);
+            openConnect(treeView,false);
         }
     }
 }
